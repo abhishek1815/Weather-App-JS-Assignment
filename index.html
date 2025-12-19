@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+<style>
+    *{
+        box-sizing: border-box;
+    }
+    body{
+        margin:0;
+        font-family: Arial;
+        background:url("https://t3.ftcdn.net/jpg/15/81/44/20/360_F_1581442041_aSunfhU7HuHkdrkRnl2blIDDAA1lSoAa.jpg");
+        background-size:cover;
+        background-position:center;
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        color:white;
+    }
+    .box{
+        width: 420px;
+        background:rgb(233, 241, 255);
+        border-radius: 18px;
+        text-align:center;
+        padding:25px;
+        box-shadow:0 10px 40px rgba(0,0,0,0.6);
+    }
+    .search{
+        display:flex;
+        justify-content:center;
+        margin-bottom:20px;
+    }
+    .search input{
+        padding:10px;
+        width:250px;
+        border-radius:19px;
+        border:2px solid gray;
+        background-color: whitesmoke;
+    }
+    .search button{
+        padding:10px 15px;
+        margin-left:6px;
+        border-radius:50px;
+        border: 1px solid gray;
+        background:rgb(36, 36, 36);
+        color:white;
+        cursor:pointer;
+        font-size: 15px;
+    }
+    .search button:hover{
+        opacity:0.8;
+    }
+    .main{
+        background:black;
+        color:white;
+        padding:25px;
+        border-radius:18px;
+    }
+    #condition{
+        font-size: 17px;
+    }
+    #place{
+        text-transform: capitalize;
+        font-size: 18px;
+    }
+    .dates{
+        background: rgb(13, 187, 44);
+        padding:10px 20px;
+        border-radius:10px;
+        display:inline-block;
+        margin-top:8px;
+    }
+    .bottom{
+        display:flex;
+        justify-content:space-around;
+        margin-top:20px;
+        color:black;
+    }
+    .icon{
+        text-align:center;
+        font-size:20px;
+    }
+    
+</style>
+</head>
+
+<body>
+
+    <div>
+
+      <div class="search">
+        <input id="city" placeholder="Enter City">
+        <button onclick="weather()">Search</button>
+      </div>
+
+      <div class="box">
+
+        <div class="main">
+          <h1 id="temp">-- °C</h1>
+          <p id="condition">---</p>
+          <p id="place">City</p>
+          <p class="dates" id="date"></p>
+        </div>
+
+        <div class="bottom">
+
+          <div class="icon">
+            <p id="humidity">--%</p>
+            <p>Humidity</p>
+          </div>
+
+          <div class="icon">
+            <p id="pressure">--</p>
+            <p>Pressure</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+<script>
+
+    async function weather(){
+
+        let city = document.getElementById("city").value;
+
+        if(city.trim() === ""){
+          alert("Please enter a city name")
+          return;
+        }
+
+        try{
+          let res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=04727c2e43f9b2ce0c3b23fbab29bf62`);
+        
+          let data = await res.json()
+
+          document.getElementById("temp").innerText = data.main.temp + " °C"
+          document.getElementById("condition").innerText = data.weather[0].description
+          document.getElementById("place").innerText = city
+          document.getElementById("humidity").innerText = data.main.humidity + "%"
+          document.getElementById("pressure").innerText = data.main.pressure
+          document.getElementById("date").innerText = new Date()
+
+        }
+
+        catch(error){
+          alert("You Entered Wrong City Name!")
+        }
+
+    }
+</script>
+
+</body>
+</html>
